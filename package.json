@@ -5,7 +5,7 @@
   "type": "commonjs",
   "main": "dist/Server.js",
   "scripts": {
-    "dev": "tsx watch Server.ts",
+    "dev": "node dist/Server.js",
     "build": "tsc -p tsconfig.json",
     "start": "node dist/Server.js",
     "start:prod": "npm run build && npm run start"
