@@ -48,8 +48,19 @@ async function startServer() {
         await Database_js_1.default;
         appBuild = await (0, MainApp_js_1.MainApp)();
         await appBuild.container.webhookWorker.start();
-        server = appBuild.app.listen(port, () => {
-            logger_js_1.logger.info({ port }, 'Server listening');
+        server = appBuild.app.listen(port);
+        server.on('error', async (error) => {
+            if (error.code === 'EADDRINUSE') {
+                logger_js_1.logger.fatal({ port, errorCode: error.code }, 'Port is already in use. Stop the other process using this port and restart.');
+                await stopGracefully('EADDRINUSE');
+                return;
+            }
+            logger_js_1.logger.fatal({ error }, 'Server listen error');
+            process.exit(1);
+        });
+        server.on('listening', () => {
+            const address = server.address();
+            logger_js_1.logger.info({ port: typeof address === 'string' ? address : address?.port }, 'Server listening');
         });
     }
     catch (error) {

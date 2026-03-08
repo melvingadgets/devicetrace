@@ -2,10 +2,10 @@
 import cors from 'cors';
 import helmet from 'helmet';
 import { env } from './config/env';
-import { registerRoutes } from './Router';
-import { errorHandler } from './Middleware/errorHandler';
-import { requestContextMiddleware } from './Middleware/requestContext';
-import { WebhookController } from './Controller/webhook.controller';
+import { registerRoutes } from './routes';
+import { errorHandler } from './middleware/errorHandler';
+import { requestContextMiddleware } from './middleware/requestContext';
+import { WebhookController } from './controllers/webhook.controller';
 
 const parseCorsOrigins = (): boolean | string[] => {
   if (env.CORS_ORIGINS === '*') return true;

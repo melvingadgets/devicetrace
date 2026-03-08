@@ -10,8 +10,6 @@ const healthRouter = () => {
             status: 'ok',
             service: 'whatsapp-webhook-service',
             env: env_1.env.NODE_ENV,
-            queueProvider: env_1.env.QUEUE_PROVIDER,
-            idempotencyProvider: env_1.env.IDEMPOTENCY_PROVIDER,
             timestamp: new Date().toISOString(),
         });
     });

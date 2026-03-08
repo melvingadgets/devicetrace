@@ -9,8 +9,6 @@ export const healthRouter = (): Router => {
       status: 'ok',
       service: 'whatsapp-webhook-service',
       env: env.NODE_ENV,
-      queueProvider: env.QUEUE_PROVIDER,
-      idempotencyProvider: env.IDEMPOTENCY_PROVIDER,
       timestamp: new Date().toISOString(),
     });
   });

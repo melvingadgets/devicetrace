@@ -8,9 +8,9 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const env_1 = require("./config/env");
-const Router_1 = require("./Router");
-const errorHandler_1 = require("./Middleware/errorHandler");
-const requestContext_1 = require("./Middleware/requestContext");
+const routes_1 = require("./routes");
+const errorHandler_1 = require("./middleware/errorHandler");
+const requestContext_1 = require("./middleware/requestContext");
 const parseCorsOrigins = () => {
     if (env_1.env.CORS_ORIGINS === '*')
         return true;
@@ -30,7 +30,7 @@ const createApp = (webhookController) => {
     // Set body limit to guard against oversized payload attacks.
     app.use(express_1.default.json({ limit: env_1.env.JSON_BODY_LIMIT }));
     app.use(requestContext_1.requestContextMiddleware);
-    (0, Router_1.registerRoutes)(app, webhookController);
+    (0, routes_1.registerRoutes)(app, webhookController);
     // Keep this last so all thrown errors get centralized handling.
     app.use(errorHandler_1.errorHandler);
     return app;

@@ -48,8 +48,28 @@ async function startServer(): Promise<void> {
     appBuild = await MainApp();
 
     await appBuild.container.webhookWorker.start();
-    server = appBuild.app.listen(port, () => {
-      logger.info({ port }, 'Server listening');
+    server = appBuild.app.listen(port);
+
+    server.on('error', async (error: NodeJS.ErrnoException) => {
+      if (error.code === 'EADDRINUSE') {
+        logger.fatal(
+          { port, errorCode: error.code },
+          'Port is already in use. Stop the other process using this port and restart.',
+        );
+        await stopGracefully('EADDRINUSE');
+        return;
+      }
+
+      logger.fatal({ error }, 'Server listen error');
+      process.exit(1);
+    });
+
+    server.on('listening', () => {
+      const address = server.address();
+      logger.info(
+        { port: typeof address === 'string' ? address : address?.port },
+        'Server listening',
+      );
     });
   } catch (error) {
     logger.fatal({ error }, 'Server startup failed');

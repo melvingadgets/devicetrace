@@ -1,7 +1,6 @@
 import { stableHash } from '../../utils/hash';
 import type { ParsedWhatsAppWebhookPayload } from '../../validation/whatsappWebhook.schema';
 import type {
-  NormalizedEventKind,
   NormalizedMessageEvent,
   NormalizedStatusEvent,
   NormalizedUnsupportedEvent,
@@ -22,7 +21,7 @@ const buildMessageEvent = (
   const eventId = msg.id || stableHash(`message:${eventSeed}:${entryId}:${changeIndex}:${messageIndex}`);
   return {
     eventId,
-    kind: 'message' as NormalizedEventKind,
+    kind: 'message',
     source,
     receivedAt,
     rawChange: { kind: 'message', payload: msg },
@@ -42,7 +41,7 @@ const buildStatusEvent = (
   const eventId = status.id || stableHash(`status:${eventSeed}:${entryId}:${changeIndex}:${statusIndex}`);
   return {
     eventId,
-    kind: 'status' as NormalizedEventKind,
+    kind: 'status',
     source,
     receivedAt,
     rawChange: { kind: 'status', payload: status },
